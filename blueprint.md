@@ -1,40 +1,30 @@
-# Radar Analytics - Minimal MVP
+## **Visão Geral**
 
-## Overview
+Este é um aplicativo Next.js com Firebase integrado. O aplicativo possui um sistema de autenticação com login e logout, e uma página de dashboard protegida que só pode ser acessada por usuários autenticados.
 
-This document outlines the blueprint for a minimal viable product (MVP) of the Radar Analytics application. The application is built using Next.js and Firebase, and it provides basic user authentication and a dashboard.
+## **Design e Estilo**
 
-## Project Structure
+- **Paleta de Cores:** Fundo escuro (`bg-gray-900`) com elementos em cinza mais claro (`bg-gray-800`) e texto branco.
+- **Tipografia:** Fonte padrão do sistema.
+- **Componentes:**
+    - **Botões:** Cantos arredondados, preenchimento e efeito de foco.
+    - **Inputs:** Estilo similar aos botões, com fundo claro e texto escuro.
 
-- **/src/app**: Main application directory.
-  - **/login**: Login page.
-  - **/dashboard**: Dashboard page.
-  - **layout.tsx**: Root layout.
-  - **page.tsx**: Home page.
-  - **globals.css**: Global styles.
-- **/src/lib**: Utility functions and libraries.
-  - **firebase.ts**: Firebase configuration and initialization.
-- **firebase.json**: Firebase hosting configuration.
-- **firestore.rules**: Firestore security rules.
-- **storage.rules**: Firebase Storage security rules.
-- **tailwind.config.js**: Tailwind CSS configuration.
-- **postcss.config.mjs**: PostCSS configuration.
-- **package.json**: Project dependencies and scripts.
+## **Funcionalidades**
 
-## Features
+- **Autenticação de Usuário:**
+    - Login com email e senha.
+    - Logout.
+- **Página de Login:** Formulário para inserir email e senha.
+- **Página de Dashboard:** Página protegida que exibe a mensagem "Usuário autenticado" e um botão de logout.
+- **Middleware:** Protege a rota `/dashboard`, redirecionando usuários não autenticados para a página de login.
+- **Regras do Firestore:** Permite leitura e escrita apenas para usuários autenticados.
 
-- **User Authentication**: A simple login form is provided. Firebase Authentication can be integrated to handle user sign-in.
-- **Dashboard**: A basic dashboard page is available after successful login.
+## **Plano de Alterações**
 
-## Design
-
-- **Styling**: Tailwind CSS is used for styling.
-- **Layout**: The application uses a simple and clean layout.
-
-## Plan
-
-- **Initial Setup**: The basic project structure, including pages, components, and Firebase configuration, has been created.
-- **Next Steps**:
-  - Configure Firebase credentials in `src/lib/firebase.ts`.
-  - Implement user authentication logic using Firebase Authentication.
-  - Enhance the dashboard with actual analytics data.
+- **Fase 1 (Concluída):** Configuração inicial do projeto Next.js com páginas de login e dashboard.
+- **Fase 2 (Atual):** Implementação da autenticação com Firebase, incluindo:
+    - Configuração do Firebase Client SDK.
+    - Criação de Server Actions para login e logout.
+    - Implementação de middleware para proteger a rota `/dashboard`.
+    - Definição das regras de segurança do Firestore.

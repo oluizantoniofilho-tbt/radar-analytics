@@ -1,46 +1,56 @@
-import Link from "next/link";
+'use client';
+
+import { login } from "@/app/actions/auth";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const result = await login(formData);
+
+    if (result.success) {
+      router.push('/dashboard');
+    } else {
+      setError(result.error || 'An unexpected error occurred.');
+    }
+  };
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-center text-3xl font-bold">Login</h1>
-        <form>
-          <div className="mb-4">
-            <label className="mb-2 block text-sm font-medium text-gray-700" htmlFor="email">
-              Email
-            </label>
+    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+      <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold text-center">Login</h1>
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label className="block mb-2 text-sm font-medium">Email</label>
             <input
-              className="w-full rounded-md border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              id="email"
               type="email"
-              placeholder="seu@email.com"
+              name="email"
+              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
-          <div className="mb-6">
-            <label className="mb-2 block text-sm font-medium text-gray-700" htmlFor="password">
-              Senha
-            </label>
+          <div>
+            <label className="block mb-2 text-sm font-medium">Password</label>
             <input
-              className="w-full rounded-md border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              id="password"
               type="password"
-              placeholder="********"
+              name="password"
+              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
-            className="w-full rounded-md bg-blue-600 p-3 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             type="submit"
+            className="w-full py-2 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Entrar
+            Login
           </button>
         </form>
-        <p className="mt-4 text-center text-sm">
-          Não tem uma conta?{" "}
-          <Link href="/signup" className="font-medium text-blue-600 hover:underline">
-            Cadastre-se
-          </Link>
-        </p>
       </div>
     </div>
   );
