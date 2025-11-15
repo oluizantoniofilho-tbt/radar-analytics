@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { redirect } from "next/navigation";
 
 export async function login(formData: FormData) {
   const email = formData.get("email") as string;
@@ -13,7 +14,6 @@ export async function login(formData: FormData) {
     const user = userCredential.user;
     const idToken = await user.getIdToken();
 
-    // NOVO PADRÃO NEXT.JS 15/16
     const cookieStore = await cookies();
     cookieStore.set({
       name: "idToken",
@@ -23,22 +23,18 @@ export async function login(formData: FormData) {
       path: "/",
     });
 
-    return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+    redirect("/dashboard");
+
+  } catch (error) {
+    redirect("/login?error=1");
   }
 }
 
 export async function logout() {
-  try {
-    // limpa cookies no Next.js 16
-    const cookieStore = await cookies();
-    cookieStore.delete("idToken");
+  const cookieStore = await cookies();
+  cookieStore.delete("idToken");
 
-    await signOut(auth);
+  await signOut(auth);
 
-    return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
-  }
+  redirect("/login");
 }
